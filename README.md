@@ -1,6 +1,6 @@
 # flutter_todo
 
-A new Flutter project.
+Todolist App Built in Flutter for IOS
 
 ## Getting Started
 
