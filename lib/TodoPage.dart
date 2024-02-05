@@ -1,6 +1,8 @@
 import "dart:ui";
 
 import "package:flutter/material.dart";
+import "package:flutter_todo/data.dart";
+import "package:hive/hive.dart";
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -10,16 +12,54 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
+  final _db = Hive.box('tddb');
+  ToDoDatabase db = ToDoDatabase();
+
+  @override
+  void initState() {
+    db.loadData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('To Do'),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: Padding(
-          padding: EdgeInsets.only(top: 10.0), child: ReorderableList()),
-    );
+        appBar: AppBar(
+          title: Text('To Do'),
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        body: ReorderableListView.builder(
+          itemBuilder: (context, index) {
+            return Card(
+              key: Key('$index'),
+              color: Theme.of(context).cardColor,
+              child: SizedBox(
+                height: 80,
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      Text(db.toDoList[index].action),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+          itemCount: db.toDoList.length,
+          onReorder: (int oldIndex, int newIndex) {
+            setState(() {
+              if (oldIndex < newIndex) {
+                newIndex -= 1;
+              }
+              final ToDo item = db.toDoList.removeAt(oldIndex);
+              db.toDoList.insert(newIndex, item);
+            });
+          },
+        )
+        // body: Padding(
+        // padding: EdgeInsets.only(top: 10.0), child: ReorderableList()),
+        );
   }
 }
 
@@ -37,10 +77,20 @@ class _ReorderableListState extends State<ReorderableList> {
     final List<Card> cards = <Card>[
       for (int i = 0; i < _items.length; i++)
         Card(
-            key: Key('$i'),
-            color: Theme.of(context).cardColor,
-            child: SizedBox(
-                height: 80, child: Center(child: Text('${_items[i]}'))))
+          key: Key('$i'),
+          color: Theme.of(context).cardColor,
+          child: SizedBox(
+            height: 80,
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Text('${_items[i]}'),
+                ],
+              ),
+            ),
+          ),
+        )
     ];
 
     Widget proxyDecorator(
