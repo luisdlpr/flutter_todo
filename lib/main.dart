@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       home: TodoPage(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.amber,
+          seedColor: Colors.teal,
         ),
         fontFamily: 'RobotoMono',
       ),

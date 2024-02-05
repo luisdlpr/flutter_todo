@@ -15,8 +15,10 @@ class _TodoPageState extends State<TodoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('To Do'),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: ReorderableList(),
+      body: Padding(
+          padding: EdgeInsets.only(top: 10.0), child: ReorderableList()),
     );
   }
 }
