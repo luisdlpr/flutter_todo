@@ -47,7 +47,16 @@ class _TodoPageState extends State<TodoPage> {
                 padding: EdgeInsets.all(20.0),
                 child: Row(
                   children: [
+                    Checkbox(
+                        value: db.toDoList[index].completion,
+                        onChanged: (val) {
+                          setState(() {
+                            db.toDoList[index].completion = val!;
+                            db.saveData();
+                          });
+                        }),
                     Text(db.toDoList[index].action),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.delete))
                   ],
                 ),
               ),
