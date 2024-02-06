@@ -1,6 +1,7 @@
 import "dart:ui";
 
 import "package:flutter/material.dart";
+import "package:flutter_todo/ToDo.dart";
 import "package:flutter_todo/data.dart";
 import "package:hive/hive.dart";
 
@@ -21,45 +22,64 @@ class _TodoPageState extends State<TodoPage> {
     super.initState();
   }
 
+  void createToDo() {
+    setState(() {
+      db.toDoList.add(ToDo('test', false));
+      db.saveData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('To Do'),
-          backgroundColor: Theme.of(context).primaryColor,
-        ),
-        body: ReorderableListView.builder(
-          itemBuilder: (context, index) {
-            return Card(
-              key: Key('$index'),
-              color: Theme.of(context).cardColor,
-              child: SizedBox(
-                height: 80,
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      Text(db.toDoList[index].action),
-                    ],
-                  ),
+      appBar: AppBar(
+        title: Text('To Do'),
+        backgroundColor: Theme.of(context).primaryColorLight,
+      ),
+      body: ReorderableListView.builder(
+        itemBuilder: (context, index) {
+          return Card(
+            key: Key('$index'),
+            color: Theme.of(context).cardColor,
+            child: SizedBox(
+              height: 80,
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    Text(db.toDoList[index].action),
+                  ],
                 ),
               ),
-            );
-          },
-          itemCount: db.toDoList.length,
-          onReorder: (int oldIndex, int newIndex) {
-            setState(() {
-              if (oldIndex < newIndex) {
-                newIndex -= 1;
-              }
-              final ToDo item = db.toDoList.removeAt(oldIndex);
-              db.toDoList.insert(newIndex, item);
-            });
-          },
-        )
-        // body: Padding(
-        // padding: EdgeInsets.only(top: 10.0), child: ReorderableList()),
-        );
+            ),
+          );
+        },
+        itemCount: db.toDoList.length,
+        onReorder: (int oldIndex, int newIndex) {
+          setState(() {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            final ToDo item = db.toDoList.removeAt(oldIndex);
+            db.toDoList.insert(newIndex, item);
+          });
+        },
+      ),
+      // body: Padding(
+      // padding: EdgeInsets.only(top: 10.0), child: ReorderableList()),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          createToDo();
+        },
+        child: Icon(Icons.add),
+        style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+          padding: EdgeInsets.all(20),
+          backgroundColor: Theme.of(context).primaryColorLight,
+          foregroundColor: Theme.of(context).hintColor,
+        ),
+      ),
+    );
   }
 }
 

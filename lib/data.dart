@@ -1,3 +1,4 @@
+import 'package:flutter_todo/ToDo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ToDoDatabase {
@@ -14,18 +15,11 @@ class ToDoDatabase {
     if (_db.get('session$session') == null) {
       createInitialData();
     } else {
-      toDoList = _db.get('session$session');
+      toDoList = List<ToDo>.from(_db.get('session$session'));
     }
   }
 
   void saveData() {
     _db.put('session$session', toDoList);
   }
-}
-
-class ToDo {
-  String action = '';
-  bool completion = false;
-
-  ToDo(this.action, this.completion);
 }

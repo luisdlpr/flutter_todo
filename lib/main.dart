@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/ToDo.dart';
 import 'package:flutter_todo/TodoPage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   await Hive.initFlutter();
-
+  Hive.registerAdapter(ToDoAdapter());
   var _db = await Hive.openBox('tddb');
 
   runApp(const MyApp());
