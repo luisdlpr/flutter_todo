@@ -1,6 +1,8 @@
 import "dart:ui";
 
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_todo/NewTodoDialog.dart";
 import "package:flutter_todo/ToDo.dart";
 import "package:flutter_todo/data.dart";
 import "package:hive/hive.dart";
@@ -15,6 +17,7 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   final _db = Hive.box('tddb');
   ToDoDatabase db = ToDoDatabase();
+  TextEditingController NewTodoTextController = TextEditingController();
 
   @override
   void initState() {
@@ -85,6 +88,7 @@ class _TodoPageState extends State<TodoPage> {
             }
             final ToDo item = db.toDoList.removeAt(oldIndex);
             db.toDoList.insert(newIndex, item);
+            db.saveData();
           });
         },
       ),
@@ -92,7 +96,23 @@ class _TodoPageState extends State<TodoPage> {
       // padding: EdgeInsets.only(top: 10.0), child: ReorderableList()),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          createToDo();
+          showDialog(
+              context: context,
+              builder: (context) {
+                return NewTodoDialog(
+                  createToDo: () {
+                    setState(() {
+                      db.toDoList.add(ToDo(NewTodoTextController.text, false));
+                      Navigator.pop(context);
+                      NewTodoTextController.clear();
+                      db.saveData();
+                    });
+                  },
+                  controller: NewTodoTextController,
+                );
+              }).then((val) {
+            NewTodoTextController.clear();
+          });
         },
         child: Icon(Icons.add),
         style: ElevatedButton.styleFrom(
