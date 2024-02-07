@@ -46,6 +46,7 @@ class _TodoPageState extends State<TodoPage> {
               child: Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Checkbox(
                         value: db.toDoList[index].completion,
@@ -55,8 +56,21 @@ class _TodoPageState extends State<TodoPage> {
                             db.saveData();
                           });
                         }),
-                    Text(db.toDoList[index].action),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+                    Text(
+                      db.toDoList[index].action,
+                      style: TextStyle(
+                          decoration: (db.toDoList[index].completion)
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            db.toDoList.removeAt(index);
+                            db.saveData();
+                          });
+                        },
+                        icon: Icon(Icons.delete))
                   ],
                 ),
               ),
