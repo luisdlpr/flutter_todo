@@ -24,6 +24,7 @@ class NewTodoDialog extends StatelessWidget {
             Flexible(
               flex: 10,
               child: TextField(
+                key: const Key('addToDoTextField'),
                 controller: controller,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,

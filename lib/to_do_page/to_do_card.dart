@@ -29,6 +29,7 @@ class ToDoCard extends StatelessWidget {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Checkbox(
+              key: Key('TDCompletionStatus$index'),
               value: completion,
               onChanged: (v) {
                 toggleCompletion(v!, index);
@@ -42,6 +43,7 @@ class ToDoCard extends StatelessWidget {
                       : TextDecoration.none),
             ),
             IconButton(
+                key: Key('TDDeleteButton$index'),
                 onPressed: () {
                   deleteToDo(index);
                 },

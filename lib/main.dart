@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/ToDo.dart';
+import 'package:flutter_todo/data.dart';
 import 'package:flutter_todo/to_do_page/main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'To Do',
-      home: const TodoPage(),
+      home: TodoPage(db: ToDoDatabase(db: Hive.box('tddb'))),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.teal,

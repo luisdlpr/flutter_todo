@@ -5,21 +5,45 @@ class ToDoDatabase {
   int session = 1;
   List<ToDo> toDoList = [];
 
-  final _db = Hive.box('tddb');
+  final Box<dynamic> db;
+
+  ToDoDatabase({required this.db});
 
   void createInitialData() {
     toDoList = [];
   }
 
   void loadData() {
-    if (_db.get('session$session') == null) {
+    if (db.get('session$session') == null) {
       createInitialData();
     } else {
-      toDoList = List<ToDo>.from(_db.get('session$session'));
+      toDoList = List<ToDo>.from(db.get('session$session'));
     }
   }
 
   void saveData() {
-    _db.put('session$session', toDoList);
+    db.put('session$session', toDoList);
+  }
+
+  void addToDo(String value, bool completion) {
+    toDoList.add(ToDo(value, completion));
+    saveData();
+  }
+
+  void toggleToDoCompletion(bool val, int index) {
+    toDoList[index].completion = val;
+    saveData();
+  }
+
+  void deleteToDo(int index) {
+    toDoList.removeAt(index);
+    saveData();
+  }
+
+  void reorderToDo(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) newIndex--;
+    final ToDo item = toDoList.removeAt(oldIndex);
+    toDoList.insert(newIndex, item);
+    saveData();
   }
 }

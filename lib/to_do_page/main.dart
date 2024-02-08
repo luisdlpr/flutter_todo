@@ -1,57 +1,52 @@
 import "package:flutter/material.dart";
 import 'package:flutter_todo/to_do_page/add_to_do_dialog.dart';
-import "package:flutter_todo/ToDo.dart";
 import "package:flutter_todo/data.dart";
 import "package:flutter_todo/to_do_page/add_to_do_button.dart";
 import "package:flutter_todo/to_do_page/app_bar.dart";
 import "package:flutter_todo/to_do_page/to_do_card.dart";
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({super.key});
+  final ToDoDatabase db;
+  const TodoPage({super.key, required this.db});
 
   @override
   State<TodoPage> createState() => _TodoPageState();
 }
 
 class _TodoPageState extends State<TodoPage> {
-  ToDoDatabase db = ToDoDatabase();
+  late ToDoDatabase db;
   TextEditingController newTodoTextController = TextEditingController();
 
   @override
   void initState() {
+    db = widget.db;
     db.loadData();
     super.initState();
   }
 
   void createToDo() {
     setState(() {
-      db.toDoList.add(ToDo(newTodoTextController.text, false));
+      db.addToDo(newTodoTextController.text, false);
       Navigator.pop(context);
       newTodoTextController.clear();
-      db.saveData();
     });
   }
 
   void toggleToDoCompletion(bool val, int index) {
     setState(() {
-      db.toDoList[index].completion = val;
-      db.saveData();
+      db.toggleToDoCompletion(val, index);
     });
   }
 
   void deleteToDo(int index) {
     setState(() {
-      db.toDoList.removeAt(index);
-      db.saveData();
+      db.deleteToDo(index);
     });
   }
 
   void reorderToDo(int oldIndex, int newIndex) {
     setState(() {
-      if (oldIndex < newIndex) newIndex--;
-      final ToDo item = db.toDoList.removeAt(oldIndex);
-      db.toDoList.insert(newIndex, item);
-      db.saveData();
+      db.reorderToDo(oldIndex, newIndex);
     });
   }
 
