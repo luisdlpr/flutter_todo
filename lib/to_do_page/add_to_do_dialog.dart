@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_todo/ToDo.dart';
-import 'package:flutter_todo/data.dart';
 
 class NewTodoDialog extends StatelessWidget {
   final VoidCallback createToDo;
@@ -17,13 +14,13 @@ class NewTodoDialog extends StatelessWidget {
         heightFactor: 0.5,
         child: Column(
           children: [
-            Spacer(),
-            Flexible(
+            const Spacer(),
+            const Flexible(
               child: Text(
                 'Note down your next task!',
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Flexible(
               flex: 10,
               child: TextField(
@@ -32,17 +29,18 @@ class NewTodoDialog extends StatelessWidget {
                 maxLines: null,
                 expands: true,
                 textAlignVertical: TextAlignVertical.top,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             MaterialButton(
-                onPressed: createToDo,
-                color: Theme.of(context).primaryColorLight,
-                minWidth: double.infinity,
-                child: Text('Save'))
+              onPressed: createToDo,
+              color: Theme.of(context).primaryColorLight,
+              minWidth: double.infinity,
+              child: const Text('Save'),
+            )
           ],
         ),
       ),

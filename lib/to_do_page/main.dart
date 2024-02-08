@@ -1,0 +1,97 @@
+import "package:flutter/material.dart";
+import 'package:flutter_todo/to_do_page/add_to_do_dialog.dart';
+import "package:flutter_todo/ToDo.dart";
+import "package:flutter_todo/data.dart";
+import "package:flutter_todo/to_do_page/add_to_do_button.dart";
+import "package:flutter_todo/to_do_page/app_bar.dart";
+import "package:flutter_todo/to_do_page/to_do_card.dart";
+
+class TodoPage extends StatefulWidget {
+  const TodoPage({super.key});
+
+  @override
+  State<TodoPage> createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+  ToDoDatabase db = ToDoDatabase();
+  TextEditingController newTodoTextController = TextEditingController();
+
+  @override
+  void initState() {
+    db.loadData();
+    super.initState();
+  }
+
+  void createToDo() {
+    setState(() {
+      db.toDoList.add(ToDo(newTodoTextController.text, false));
+      Navigator.pop(context);
+      newTodoTextController.clear();
+      db.saveData();
+    });
+  }
+
+  void toggleToDoCompletion(bool val, int index) {
+    setState(() {
+      db.toDoList[index].completion = val;
+      db.saveData();
+    });
+  }
+
+  void deleteToDo(int index) {
+    setState(() {
+      db.toDoList.removeAt(index);
+      db.saveData();
+    });
+  }
+
+  void reorderToDo(int oldIndex, int newIndex) {
+    setState(() {
+      if (oldIndex < newIndex) newIndex--;
+      final ToDo item = db.toDoList.removeAt(oldIndex);
+      db.toDoList.insert(newIndex, item);
+      db.saveData();
+    });
+  }
+
+  void showToDoDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return NewTodoDialog(
+            createToDo: createToDo,
+            controller: newTodoTextController,
+          );
+        }).then((val) {
+      newTodoTextController.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: const Key('ToDoPage'),
+      appBar: ToDoAppBar(
+          key: const Key('ToDoAppBar'),
+          backgroundColor: Theme.of(context).primaryColorLight),
+      body: ReorderableListView.builder(
+        itemBuilder: (context, index) {
+          return ToDoCard(
+            key: Key('$index'),
+            index: index,
+            completion: db.toDoList[index].completion,
+            toggleCompletion: toggleToDoCompletion,
+            action: db.toDoList[index].action,
+            deleteToDo: deleteToDo,
+          );
+        },
+        itemCount: db.toDoList.length,
+        onReorder: reorderToDo,
+      ),
+      floatingActionButton: AddToDoButton(
+        showToDoDialog: showToDoDialog,
+      ),
+    );
+  }
+}
