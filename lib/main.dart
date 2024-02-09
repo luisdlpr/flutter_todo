@@ -7,19 +7,20 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoAdapter());
-  await Hive.openBox('tddb');
+  Box box = await Hive.openBox('tddb');
 
-  runApp(const MyApp());
+  runApp(MyApp(box: box));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Box box;
+  const MyApp({super.key, required this.box});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'To Do',
-      home: TodoPage(db: ToDoDatabase(db: Hive.box('tddb'))),
+      home: TodoPage(db: ToDoDatabase(db: box)),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.teal,

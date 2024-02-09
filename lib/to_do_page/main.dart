@@ -53,6 +53,8 @@ class _TodoPageState extends State<TodoPage> {
   void showToDoDialog() {
     showDialog(
         context: context,
+        barrierDismissible: true,
+        barrierLabel: 'exitToDoDialog',
         builder: (context) {
           return NewTodoDialog(
             createToDo: createToDo,

@@ -36,6 +36,7 @@ class ToDoCard extends StatelessWidget {
               },
             ),
             Text(
+              key: Key('TDAction$index'),
               action,
               style: TextStyle(
                   decoration: (completion)
