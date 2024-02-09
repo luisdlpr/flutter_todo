@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'ToDo.g.dart';
+part 'to_do.g.dart';
 
 @HiveType(typeId: 1)
 class ToDo {

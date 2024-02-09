@@ -3,8 +3,8 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter_todo/data.dart' as _i3;
-import 'package:flutter_todo/ToDo.dart' as _i4;
+import 'package:flutter_todo/data/to_do_database.dart' as _i3;
+import 'package:flutter_todo/data/to_do.dart' as _i4;
 import 'package:hive_flutter/hive_flutter.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 

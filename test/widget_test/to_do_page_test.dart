@@ -1,9 +1,8 @@
 // Main To Do Page Widget Tests.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_todo/data.dart';
+import 'package:flutter_todo/data/to_do_database.dart';
 import 'package:flutter_todo/to_do_page/main.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

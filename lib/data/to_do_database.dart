@@ -1,4 +1,4 @@
-import 'package:flutter_todo/ToDo.dart';
+import 'package:flutter_todo/data/to_do.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ToDoDatabase {
