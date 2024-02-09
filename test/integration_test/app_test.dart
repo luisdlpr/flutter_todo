@@ -49,13 +49,16 @@ void main() {
       expect(completionStatusTaskOne.value, true);
       expect(completionStatusTaskTwo.value, false);
 
-      /** UNABLE TO TEST REORDERING
       // test drag to reorder
-      print(tester.elementList(find.byType(ToDoCard)));
-      await tester.timedDrag(find.text('test task 1'), Offset(0, -500),
-          const Duration(seconds: 4));
+      final Offset firstTaskPos = tester.getCenter(find.text('test task 1'));
+      final TestGesture drag = await tester.startGesture(firstTaskPos);
+      await tester.pumpAndSettle(Duration(seconds: 2));
+      await drag.moveBy(const Offset(0, 200));
+      await tester.pumpAndSettle(Duration(seconds: 2));
+      await drag.up();
       await tester.pumpAndSettle();
-      print(tester.elementList(find.byType(ToDoCard)));
+      print(tester.elementList(find.byKey(Key('TDAction0'))));
+      print(tester.elementList(find.byKey(Key('TDAction1'))));
       completionStatusTaskOne = tester.firstWidget(
         find.byKey(
           const Key('TDCompletionStatus0'),
@@ -68,7 +71,6 @@ void main() {
       );
       expect(completionStatusTaskOne.value, false);
       expect(completionStatusTaskTwo.value, true);
-      */
 
       // test deleting first to do
       await tester.tap(find.byKey(const Key('TDDeleteButton0')));
@@ -76,8 +78,8 @@ void main() {
       completionStatusTaskOne =
           tester.firstWidget(find.byKey(Key('TDCompletionStatus0')));
       expect(find.byType(ToDoCard), findsOneWidget);
-      expect(find.text('test task 2'), findsOneWidget);
-      expect(completionStatusTaskOne.value, false);
+      expect(find.text('test task 1'), findsOneWidget);
+      expect(completionStatusTaskOne.value, true);
 
       // test adding to do
       await tester.tap(find.byType(AddToDoButton));

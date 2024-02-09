@@ -46,7 +46,12 @@ class _TodoPageState extends State<TodoPage> {
 
   void reorderToDo(int oldIndex, int newIndex) {
     setState(() {
+      print('hello');
+      print(oldIndex);
+      print(newIndex);
+      print(db.toDoList.map((e) => e.action));
       db.reorderToDo(oldIndex, newIndex);
+      print(db.toDoList.map((e) => e.action));
     });
   }
 
