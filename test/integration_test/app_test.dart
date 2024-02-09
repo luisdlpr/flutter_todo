@@ -51,14 +51,16 @@ void main() {
 
       // test drag to reorder
       final Offset firstTaskPos = tester.getCenter(find.text('test task 1'));
+
+      // gesture for reordering involves hold then drag
       final TestGesture drag = await tester.startGesture(firstTaskPos);
       await tester.pumpAndSettle(Duration(seconds: 2));
       await drag.moveBy(const Offset(0, 200));
       await tester.pumpAndSettle(Duration(seconds: 2));
       await drag.up();
       await tester.pumpAndSettle();
-      print(tester.elementList(find.byKey(Key('TDAction0'))));
-      print(tester.elementList(find.byKey(Key('TDAction1'))));
+
+      // check widgets have swapped indexes
       completionStatusTaskOne = tester.firstWidget(
         find.byKey(
           const Key('TDCompletionStatus0'),
