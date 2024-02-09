@@ -1,6 +1,9 @@
 # flutter_todo
 
-Todolist App Built in Flutter for IOS
+Todolist App Built in Flutter for IOS.
+Check out the testing suite integrated with Github actions! (can also be run using `flutter test` locally)
+
+Simple todolist with drag and drop (press and hold on ios/mobile) reordering and persistence!
 
 ## Getting Started
 
